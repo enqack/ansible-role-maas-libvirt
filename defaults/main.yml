@@ -3,5 +3,5 @@
 
 maas_libvirt_user_name: maas_libvirt
 maas_libvirt_user_groups: 'libvirt, libvirt-qemu'
-maas_libvirt_hosts_group_name: computehosts
-maas_libvirt_group_name: maas_libvirt
+maas_libvirt_target_group_name: maas_libvirt
+maas_libvirt_source_group_name: maas_rack_controller

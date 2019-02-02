@@ -2,11 +2,18 @@
 # tasks file for enqack.maas-libvirt
 
 - block: 
+  - name: Get maas user pubic key on rack controller
+    shell: cat ~maas/.ssh/id_rsa.pub
+    register: ssh_key
 
-  - name: Remove existing user for kvm hosting
+  - name: Remove existing user for kvm hosts
     user: 
       name: "{{ maas_libvirt_user_name }}"
       state: absent
+    run_once: true
+    delegate_to: "{{ item }}"
+    with_items:
+      - "{{ groups[maas_libvirt_target_group_name] }}"
 
   - name: Create user for kvm hosts
     user: 
@@ -14,12 +21,11 @@
       shell: /bin/sh
       append: true
       groups: "{{ maas_libvirt_user_groups }}"
-      generate_ssh_key: true
       state: present
-
-  - name: Get maas user pubic key on rack controller
-    shell: cat ~maas/.ssh/id_rsa.pub
-    register: ssh_key
+    run_once: true
+    delegate_to: "{{ item }}"
+    with_items:
+      - "{{ groups[maas_libvirt_target_group_name] }}"
 
   - name: Set authorized keys on kvm hosts
     authorized_key:
@@ -29,6 +35,6 @@
     delegate_to: "{{ item[1] }}"
     with_nested:
       - "{{ ssh_key.stdout }}"
-      - "{{ groups[maas_libvirt_hosts_group_name] }}"
+      - "{{ groups[maas_libvirt_target_group_name] }}"
 
-  when: inventory_hostname in groups[maas_libvirt_group_name]
+  when: inventory_hostname in groups[maas_libvirt_source_group_name]
