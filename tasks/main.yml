@@ -1,12 +1,17 @@
 ---
 # tasks file for enqack.maas-libvirt
 
-- block: 
-  - name: Get maas user pubic key on rack controller
+- block:
+  - name: Generate key pair for maas user
+    user:
+      name: maas
+      generate_ssh_key: true
+
+  - name: Get maas user public key on rack controller
     shell: cat ~maas/.ssh/id_rsa.pub
     register: ssh_key
 
-  - name: Remove existing user for kvm hosts
+  - name: Remove existing user for kvm hosts # not needed?
     user: 
       name: "{{ maas_libvirt_user_name }}"
       state: absent
@@ -36,5 +41,6 @@
     with_nested:
       - "{{ ssh_key.stdout }}"
       - "{{ groups[maas_libvirt_target_group_name] }}"
+    no_log: "{{ not maas_libvirt_log_keys }}"
 
   when: inventory_hostname in groups[maas_libvirt_source_group_name]

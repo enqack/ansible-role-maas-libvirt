@@ -16,13 +16,14 @@ Role Variables
     maas_libvirt_user_groups: 'libvirt, libvirt-qemu'
     maas_libvirt_target_group_name: maas_libvirt
     maas_libvirt_source_group_name: maas_rack_controller
+    maas_libvirt_log_keys: false
 
 Example Playbook
 ----------------
 
 Host file:
 
-    [computehosts]
+    [maas_rack_controller]
     maas-rack1.example.com
     maas-rack2.example.com
 
@@ -34,7 +35,7 @@ Host file:
 Playbook:
 
     - name: Manages compute resource hosts
-      hosts: computehosts
+      hosts: maas_rack_controller
       become: yes
 
       roles: 
