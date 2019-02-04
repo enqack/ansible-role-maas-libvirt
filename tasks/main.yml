@@ -12,7 +12,7 @@
     register: ssh_key
 
   - name: Remove existing user for kvm hosts # not needed?
-    user: 
+    user:
       name: "{{ maas_libvirt_user_name }}"
       state: absent
     run_once: true
@@ -21,7 +21,7 @@
       - "{{ groups[maas_libvirt_target_group_name] }}"
 
   - name: Create user for kvm hosts
-    user: 
+    user:
       name: "{{ maas_libvirt_user_name }}"
       shell: /bin/sh
       append: true

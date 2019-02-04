@@ -1,4 +1,4 @@
-Role Name
+maas-libvirt
 =========
 
 Creates user `maas_libvirt` and adds public key of each rack controller's `maas` user to the `maas_libvirt` user's authorized keys.
@@ -6,8 +6,8 @@ Creates user `maas_libvirt` and adds public key of each rack controller's `maas`
 Requirements
 ------------
 
-MAAS
-Libvirt
+ * MAAS
+ * Libvirt
 
 Role Variables
 --------------
